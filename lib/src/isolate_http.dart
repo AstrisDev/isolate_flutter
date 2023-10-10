@@ -118,9 +118,9 @@ class IsolateHttp {
         return await _isolateRequest.timeout(_timeout!);
       }
     } on TimeoutException catch (e) {
-      return IsolateHttpResponse(e.toString(), 408, request.headers ?? {});
+      return IsolateHttpResponse(e.toString(), 408, request.headers!, null);
     } on Exception catch (e) {
-      return IsolateHttpResponse(e.toString(), 520, request.headers ?? {});
+      return IsolateHttpResponse(e.toString(), 520, request.headers!, null);
     }
   }
 }
@@ -131,8 +131,8 @@ Future<IsolateHttpResponse?> _call(
   if (_request != null) {
     final streamedResponse = await _request.send();
     final httpResponse = await Response.fromStream(streamedResponse);
-    final _isolateHttpResponse = IsolateHttpResponse(
-        httpResponse.body, httpResponse.statusCode, httpResponse.headers,
+    final _isolateHttpResponse = IsolateHttpResponse(httpResponse.body,
+        httpResponse.statusCode, httpResponse.headers, httpResponse.bodyBytes,
         request: isolateHttpRequest, contentLength: httpResponse.contentLength);
     return _isolateHttpResponse;
   }

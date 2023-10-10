@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'dart:typed_data';
+
 import 'isolate_http_request.dart';
 
 /// The response using for Isolate Http.
@@ -12,6 +14,9 @@ class IsolateHttpResponse {
 
   /// The status code of the response as int.
   final int statusCode;
+
+  /// Response content as bytes.
+  final Uint8List? bodyBytes;
 
   /// The (frozen) request that triggered this response.
   final IsolateHttpRequest? request;
@@ -28,8 +33,14 @@ class IsolateHttpResponse {
   /// [statusCode] The status code of the response as int.
   ///
   /// [headers] The headers of the response as a Map<String, String>.
-  IsolateHttpResponse(this.body, this.statusCode, this.headers,
-      {this.contentLength, this.request});
+  IsolateHttpResponse(
+    this.body,
+    this.statusCode,
+    this.headers,
+    this.bodyBytes, {
+    this.contentLength,
+    this.request,
+  });
 
   /// Return the body as as Json (dynamic).
   dynamic get bodyJson => jsonDecode(body);
