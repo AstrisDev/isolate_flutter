@@ -1,38 +1,73 @@
-# Isolate Flutter
+# IsolateHttp
 
-## IsolateFlutter
+[![Pub][pub_v_image_url]][pub_url]
 
-[![Pub][isolate_flutter_pub_v_image_url]][isolate_flutter_pub_url]
+IsolateHttp provides a way to launch [http package][http_pub_url] with [IsolateFlutter][isolate_flutter_pub_url].
 
-[IsolateFlutter](isolate_flutter) is a useful package for you who want to make and manage Isolate. It is based on `dart:isolate` so it only support iOS and Android.
+## Usage
 
-## IsolateHttp
+Performing a `GET` request:
 
-[![Pub][isolate_http_pub_v_image_url]][isolate_http_pub_url]
+```dart
+final _isolateHttp = IsolateHttp();
+```
 
-[IsolateHttp](isolate_http) provides a way to launch [http package][http_pub_url] with IsolateFlutter.
+```dart
+final _response = await _isolateHttp.get('https://example.com/product',
+    headers: {'Authorization': 'abc='});
+print(_response);
+```
 
-## IsolateImageCompress
+Performing a `POST` request:
 
-[![Pub][isolate_image_compress_pub_v_image_url]][isolate_image_compress_pub_url]
+```dart
+final _response = await _isolateHttp.post('https://example.com/product',
+    headers: {'Authorization': 'abc='},
+    body: {'size': 'XL', 'price': 236},
+    files: [
+        HttpFile.fromPath('files', 'path/image_1.png')
+    ]);
+print(_response);
+```
 
-[IsolateImageCompress](isolate_image_compress) is a package to compress and resize the images in isolate ([IsolateFlutter][isolate_flutter_pub_url]).
+Performing a `DELETE` request:
+
+```dart
+final _response = await _isolateHttp.delete('https://example.com/product/1',
+    headers: {'Authorization': 'abc='});
+print(_response);
+```
+
+\*\*\* You can set a timeout and debug label for your request when creating an IsolateHttp like:
+
+```dart
+final _isolateHttp =  IsolateHttp(timeout: Duration(seconds: 30), debugLabel: 'get_products')
+```
+
+If timeout, its returns you an IsolateHttpResponse with status code 408 (Request Timeout).
+
+### Log Curl
+
+```dart
+_isolateHttp.listener = (curl) {
+    if (kDebugMode) {
+      log('Isolate Http -> Curl: ----------------\n$curl\n----------------');
+    }
+  };
+```
 
 ## Author
 
-IsolateFlutter is developed by Thong Dang. You can contact me at thongdn.it@gmail.com
+IsolateHttp is developed by Thong Dang. You can contact me at thongdn.it@gmail.com
 
 If you like my project, you can support me [![Buy Me A Coffee][buy_me_a_coffee_image_url]][buy_me_a_coffee_url] or star (like) for it.
 
 Thank you! ❤️
 
 [//]: # 'reference links'
-[isolate_flutter_pub_url]: https://pub.dev/packages/isolate_flutter
-[isolate_flutter_pub_v_image_url]: https://img.shields.io/pub/v/isolate_flutter.svg
-[isolate_http_pub_url]: https://pub.dev/packages/isolate_http
-[isolate_http_pub_v_image_url]: https://img.shields.io/pub/v/isolate_http.svg
 [http_pub_url]: https://pub.dev/packages/http
-[isolate_image_compress_pub_url]: https://pub.dev/packages/isolate_image_compress
-[isolate_image_compress_pub_v_image_url]: https://img.shields.io/pub/v/isolate_image_compress.svg
+[isolate_flutter_pub_url]: https://pub.dev/packages/isolate_flutter
+[pub_url]: https://pub.dev/packages/isolate_http
+[pub_v_image_url]: https://img.shields.io/pub/v/isolate_http.svg
 [buy_me_a_coffee_image_url]: https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png
 [buy_me_a_coffee_url]: https://www.buymeacoffee.com/thongdn.it
